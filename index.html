@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<!-- saved from url=(0037)https://ml4code.github.io/papers.html -->
+<html lang="en-us">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!-- Global Site Tag (gtag.js) - Google Analytics -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12"></script>
+
+    <script type="text/javascript" async="" src="./papers_files/analytics.js.下载"></script>
+    <script type="text/javascript" async="" src="./papers_files/echarts.js"></script>
+
+    <script async="" src="./papers_files/js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments) };
+        gtag('js', new Date());
+        gtag('config', 'UA-107339008-1');
+
+    </script>
+
+    <link href="http://gmpg.org/xfn/11" rel="profile">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <meta name="keywords"
+        content="machine learning, source code, big code, naturalness, software engineering, programming languages">
+
+    <title>
+
+        Search all Publications on Machine Learning for Source Code · Machine Learning for Big Code and Naturalness
+
+    </title>
+
+    <!-- Enable responsiveness on mobile devices-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="./papers_files/poole.css">
+    <link rel="stylesheet" href="./papers_files/syntax.css">
+    <link rel="stylesheet" href="./papers_files/hyde.css">
+    <link rel="stylesheet" href="./papers_files/css">
+
+    <!-- Icons -->
+<!--    <link rel="shortcut icon" href="https://ml4code.github.io/public/favicon.svg">-->
+<!--    <link rel="search" href="https://ml4code.github.io/public/opensearchdescription.xml"-->
+<!--        type="application/opensearchdescription+xml" title="ML4Code">-->
+
+    <script src="./papers_files/jquery-3.2.1.min.js.下载" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+        crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" type="text/css" href="./papers_files/jquery.dataTables.min.css">
+    <script type="text/javascript" charset="utf8" src="./papers_files/jquery.dataTables.min.js.下载"></script>
+</head>
+
+
+<body class="theme-base-0d layout-reverse">
+
+    <div class="sidebar">
+        <div class="container sidebar-sticky">
+            <div class="sidebar-about">
+                <h1>
+                    <a href="https://ml4code.github.io/">
+                        静态软件缺陷定位方法研究进展
+                    </a>
+                </h1>
+                <p class="lead">Research on static bug localization.</p>
+            </div>
+
+            <nav class="sidebar-nav">
+                <div class="sidebar-item">
+                    <p style="font-size: 12px">Search related work <input type="text" id="searchTarget" size="16">
+                        <button onclick="search();">Go</button>
+                    </p>
+                </div>
+                <a class="sidebar-nav-item active" href="">论文列表</a>
+                <a class="sidebar-nav-item" href="./papers_by_tag.html">论文标签</a>
+                <a class="sidebar-nav-item" href="wordcloud.html">词云</a>
+
+                <a class="sidebar-nav-item" href="">Core Taxonomy</a>
+
+
+                <a class="sidebar-nav-item" href="">Resources, Courses &amp;
+                    Events</a>
+                <a class="sidebar-nav-item" href="">Contributing</a>
+                <a class="sidebar-nav-item" href="">Contributors</a>
+            </nav>
+
+            <div class="sidebar-item">
+                <p style="font-size: 12px">Contact <a href="https://miltos.allamanis.com/">Miltos Allamanis</a> about
+                    this
+                    survey or website.
+                    <span style="font-size: 9px">
+                        Made with <a href="https://jekyllrb.com/">Jekyll</a> and <a
+                            href="https://github.com/poole/hyde">Hyde</a>.
+                    </span></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        $("#searchTarget").keydown(function (e) {
+            if (e.keyCode == 13) {
+                search();
+            }
+        });
+
+        function search() {
+            try {
+                ga('send', 'event', 'search', 'search', $("#searchTarget").val());
+            } finally {
+                window.location = "/papers.html#" + $("#searchTarget").val();
+            }
+        }
+
+    </script>
+
+
+    <div class="content container">
+        Search across all paper titles, abstracts, authors by using the search field.
+        Please consider <a href="https://ml4code.github.io/contributing.html">contributing</a> by updating
+        the information of existing papers or adding new work.
+       <div id="container" style="height: 300%"></div>
+
+        <div id="allPapers_wrapper" class="dataTables_wrapper no-footer">
+<!--            <div id="allPapers_filter" class="dataTables_filter"><label>Search:<input type="search" class=""-->
+<!--                        placeholder="" aria-controls="allPapers"></label>-->
+            </div>
+            <table id="allPapers" class="dataTable no-footer" role="grid" aria-describedby="allPapers_info"
+                style="width: 718px;">
+                <thead>
+                    <tr role="row">
+                        <th class="sorting_desc" tabindex="0" aria-controls="allPapers" rowspan="1" colspan="1"
+                            aria-label="Year: activate to sort column ascending" aria-sort="descending"
+                            style="width: 37px;"  @click="sort_year">
+                            Year
+                        </th>
+                        <th class="sorting_asc" tabindex="0" aria-controls="allPapers" rowspan="1" colspan="1"
+                            aria-label="Title: activate to sort column ascending" style="width: 232px;" @click="sort_title">Title
+                        </th>
+                        <th class="sorting" tabindex="0" aria-controls="allPapers" rowspan="1" colspan="1"
+                            aria-label="Authors: activate to sort column ascending" style="width: 335px;" @click="sort_authors">Authors
+                        </th>
+                        <th class="sorting" tabindex="0" aria-controls="allPapers" rowspan="1" colspan="1"
+                            aria-label="Authors: activate to sort column ascending" style="width: 100px;" @click="sort_conference">Conference
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr role="row" class="odd" v-for="paper in papers">
+                        <td class="sorting_1">{{paper.year}}</td>
+                        <td class="sorting_2" v-bind:title="paper.abstract"><a v-bind:href="paper.links" >
+                                {{paper.title}}</a>
+<!--                            <span class="externallinks">-->
+<!--                                &nbsp;<a-->
+<!--                                    href="http://scholar.google.com/scholar?q=A%20Transformer-based%20Approach%20for%20Source%20Code%20Summarization"-->
+<!--                                    target="_blank"><img style="display: inline; margin: 0;"-->
+<!--                                        src="./papers_files/google-scholar.png"></a>-->
+<!--                                <a href="https://www.semanticscholar.org/search?q=A%20Transformer-based%20Approach%20for%20Source%20Code%20Summarization"-->
+<!--                                    target="_blank"><img style="display: inline; margin: 0;"-->
+<!--                                        src="./papers_files/semscholar.png"></a>-->
+<!--                                <a href="http://academic.microsoft.com/#/search?iq=A%20Transformer-based%20Approach%20for%20Source%20Code%20Summarization"-->
+<!--                                    target="_blank"><img style="display: inline; margin: 0;"-->
+<!--                                        src="./papers_files/ms-academic.png"></a>-->
+<!--                            </span>-->
+                        </td>
+
+                        <td>{{paper.authors}}</td>
+                        <td>{{paper.conference}}</td>
+
+                    </tr>
+
+                </tbody>
+            </table>
+            <div class="dataTables_info" id="allPapers_info" role="status" aria-live="polite">Showing 1 to 80 of 80
+                entries
+                (filtered from 292 total entries)
+            </div>
+        </div>
+
+        <script>
+        var draw_pic = function(lst){
+            var year_dict = {};
+            for (var i=2006; i <= 2019; i++){
+                year_dict[i] = 0;
+            }
+            for (var i=0; i<lst.length; i++) {
+                if (lst[i].year in year_dict) {
+                    year_dict[lst[i].year] ++;
+                } else {
+                    year_dict[lst[i].year] = 1;
+                }
+            }
+            var data1 = [];
+            var data2 = [];
+            for (key in year_dict) {
+                data1.push(key);
+                data2.push(year_dict[key]);
+            }
+            console.log(year_dict);
+            var dom = document.getElementById("container");
+            var myChart = echarts.init(dom);
+            var app = {};
+            option = null;
+            option = {
+                tooltip: {
+                    trigger: 'axis',
+                    axisPointer: {            // 坐标轴指示器，坐标轴触发有效
+                        type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+                    },
+                },
+                xAxis: {
+                    type: 'category',
+                    data: data1
+                },
+                yAxis: {
+                    type: 'value'
+                },
+                series: [{
+                    data: data2,
+                    type: 'bar'
+                }]
+            };
+
+            if (option && typeof option === "object") {
+                myChart.setOption(option, true);
+            }
+        }
+
+
+            var app = new Vue({
+                el: "#allPapers",
+                data: {
+                    papers: [{ title: "123", year: "2020", authors: "sb" },
+                    { title: "234", year: "2020", authors: "2b" }],
+                },
+                methods: {
+                    sort_year: function () {
+                        this.papers.sort(function(a,b){
+                            return a.year-b.year;
+                        })
+                    },
+                    sort_title: function () {
+                        this.papers.sort(function(a,b){
+                            if (a.title > b.title) return 1;
+                            else if (a.title < b.title) return -1;
+                            else return 0;
+                        })
+                    },
+                    sort_authors: function () {
+                        this.papers.sort(function(a,b){
+                            if (a.authors > b.authors) return 1;
+                            else if (a.authors < b.authors) return -1;
+                            else return 0;
+                        })
+                    },
+                    sort_conference: function () {
+                        this.papers.sort(function(a,b){
+                            if (a.conference > b.conference) return 1;
+                            else if (a.conference < b.conference) return -1;
+                            else return 0;
+                        })
+                    }
+                }
+            })
+
+            // app.papers = [{ title: "12345", year: "2020", authors: "sb" }]
+            let url = 'papers_lst.json';
+            axios.get(url).then((response) => {
+                draw_pic(response.data);
+                app.papers = response.data
+            }).catch((error) => {
+                console.log('error', error);
+            });
+
+
+            // var datatable;
+
+            // function searchTable() {
+            //     var hash = decodeURIComponent(window.location.hash.substr(1));
+            //     datatable.search(hash).draw();
+            // }
+
+
+            // $(document).ready(function () {
+            //     datatable = $('#allPapers').DataTable({
+            //         paging: false,
+            //         "order": [[0, 'desc'], [1, 'asc']],
+            //         columnDefs: [
+            //             {
+            //                 targets: [3, 4, 5],
+            //                 visible: false,
+            //                 searchable: true
+            //             }]
+            //     });
+            //     searchTable();
+            // });
+
+            // $(window).on('hashchange', function () {
+            //     searchTable();
+            // });
+
+        </script>
+
+
+    </div>
+
+
+</body>
+
+</html>
