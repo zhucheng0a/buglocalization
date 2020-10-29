@@ -17,7 +17,6 @@
         function gtag() { dataLayer.push(arguments) };
         gtag('js', new Date());
         gtag('config', 'UA-107339008-1');
-
     </script>
 
     <link href="http://gmpg.org/xfn/11" rel="profile">
@@ -87,7 +86,7 @@
             </nav>
 
             <div class="sidebar-item">
-                <p style="font-size: 12px">Contact <a href="https://miltos.allamanis.com/">Miltos Allamanis</a> about
+                <p style="font-size: 12px">Contact <a href="">Ni Zhen</a> about
                     this
                     survey or website.
                     <span style="font-size: 9px">
@@ -121,6 +120,8 @@
         Please consider <a href="https://ml4code.github.io/contributing.html">contributing</a> by updating
         the information of existing papers or adding new work.
        <div id="container" style="height: 300%"></div>
+       <div id="container2" style="height:400px"></div>
+       <div id="container3" style="height:400px"></div>
 
         <div id="allPapers_wrapper" class="dataTables_wrapper no-footer">
 <!--            <div id="allPapers_filter" class="dataTables_filter"><label>Search:<input type="search" class=""-->
@@ -179,16 +180,28 @@
         </div>
 
         <script>
+        var count_lst = function(lst, att){
+            var return_dict = {};
+            for (var i=0; i<lst.length; i++){
+                if (lst[i][att] in return_dict){
+                    return_dict[lst[i][att]] ++;
+                } else {
+                    return_dict[lst[i][att]] = 1;
+                }
+            }
+            return return_dict;
+        }
+
         var draw_pic = function(lst){
             var year_dict = {};
             for (var i=2006; i <= 2019; i++){
                 year_dict[i] = 0;
             }
             for (var i=0; i<lst.length; i++) {
-                if (lst[i].year in year_dict) {
-                    year_dict[lst[i].year] ++;
+                if (lst[i]["year"] in year_dict) {
+                    year_dict[lst[i]["year"]] ++;
                 } else {
-                    year_dict[lst[i].year] = 1;
+                    year_dict[lst[i]["year"]] = 1;
                 }
             }
             var data1 = [];
@@ -197,7 +210,7 @@
                 data1.push(key);
                 data2.push(year_dict[key]);
             }
-            console.log(year_dict);
+            //console.log(year_dict);
             var dom = document.getElementById("container");
             var myChart = echarts.init(dom);
             var app = {};
@@ -227,6 +240,124 @@
             }
         }
 
+        var draw_pic2 = function(lst) {
+            d = count_lst(lst, "conference");
+            console.log(d);
+            data = [];
+            data2 = [];
+            for (var i in d) {
+                v = d[i];
+                data2.push({value:v, name:i})
+            }
+            data2.sort(function(a,b){console.log(a.value); return - a.value + b.value});
+            for (var i of data2){
+                data.push(i.name);
+            }
+            console.log(data2);
+            var dom = document.getElementById("container2");
+            var myChart = echarts.init(dom);
+            var app = {};
+            option = null;
+            option = {
+                tooltip: {
+                    trigger: 'item',
+                    formatter: '{a} <br/>{b}: {c} ({d}%)'
+                },
+                legend: {
+                    orient: 'vertical',
+                    left: 10,
+                    data: data
+                },
+                series: [
+                    {
+                        name: '文章来源',
+                        type: 'pie',
+                        radius: ['50%', '70%'],
+                        center:['70%', '50%'],
+                        avoidLabelOverlap: false,
+                        label: {
+                            show: false,
+                            position: 'center'
+                        },
+                        emphasis: {
+                            label: {
+                                show: true,
+                                fontSize: '30',
+                                fontWeight: 'bold'
+                            }
+                        },
+                        labelLine: {
+                            show: false
+                        },
+                        data: data2
+                    }
+                ]
+            };
+            ;
+            if (option && typeof option === "object") {
+                myChart.setOption(option, true);
+            }
+        }
+
+
+        var draw_pic3 = function(lst) {
+            d = count_lst(lst, "classification");
+            console.log(d);
+            data = [];
+            data2 = [];
+            for (var i in d) {
+                v = d[i];
+                data2.push({value:v, name:i})
+            }
+            data2.sort(function(a,b){console.log(a.value); return - a.value + b.value});
+            for (var i of data2){
+                data.push(i.name);
+            }
+            console.log(data2);
+            var dom = document.getElementById("container3");
+            var myChart = echarts.init(dom);
+            var app = {};
+            option = null;
+            option = {
+                tooltip: {
+                    trigger: 'item',
+                    formatter: '{a} <br/>{b}: {c} ({d}%)'
+                },
+                legend: {
+                    orient: 'vertical',
+                    left: 10,
+                    data: data
+                },
+                series: [
+                    {
+                        name: 'classification',
+                        type: 'pie',
+                        radius: ['50%', '70%'],
+                        center:['70%', '50%'],
+                        avoidLabelOverlap: false,
+                        label: {
+                            show: false,
+                            position: 'center'
+                        },
+                        emphasis: {
+                            label: {
+                                show: true,
+                                fontSize: '15',
+                                fontWeight: 'bold'
+                            }
+                        },
+                        labelLine: {
+                            show: false
+                        },
+                        data: data2
+                    }
+                ]
+            };
+            ;
+            if (option && typeof option === "object") {
+                myChart.setOption(option, true);
+            }
+        }
 
             var app = new Vue({
                 el: "#allPapers",
@@ -267,6 +398,8 @@
             let url = 'papers_lst.json';
             axios.get(url).then((response) => {
                 draw_pic(response.data);
+                draw_pic2(response.data);
+                draw_pic3(response.data);
                 app.papers = response.data
             }).catch((error) => {
                 console.log('error', error);

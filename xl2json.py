@@ -54,14 +54,7 @@ wc = WordCloud(
 wc.generate_from_frequencies(t_counter)
 # 保存图片
 wc.to_file(r"wordcloud.png") # 按照设置的像素宽高度保存绘制好的词云图，比下面程序显示更清晰
-# 4.显示图片
-# 指定所绘图名称
-plt.figure("jay")
-# 以图片的形式显示词云
-plt.imshow(wc)
-# 关闭图像坐标系
-plt.axis("off")
-plt.show()
+
 import json
 
 with open("papers_lst.json", "w") as f:
