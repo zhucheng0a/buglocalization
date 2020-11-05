@@ -1,12 +1,17 @@
 <!DOCTYPE html>
-<!-- saved from url=(0046)https://ml4code.github.io/tags.html#generation -->
+<!-- saved from url=(0037)https://ml4code.github.io/papers.html -->
 <html lang="en-us">
 
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <!-- Global Site Tag (gtag.js) - Google Analytics -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12"></script>
+
     <script type="text/javascript" async="" src="./papers_files/analytics.js.下载"></script>
+    <script type="text/javascript" async="" src="./papers_files/echarts.js"></script>
+
     <script async="" src="./papers_files/js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
 
@@ -16,9 +21,6 @@
         gtag('js', new Date());
         gtag('config', 'UA-107339008-1');
     </script>
-    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12"></script>
-
 
     <link href="http://gmpg.org/xfn/11" rel="profile">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -26,7 +28,7 @@
     <meta name="keywords"
           content="machine learning, source code, big code, naturalness, software engineering, programming languages">
 
-    <title>Publications by Tag</title>
+    <title>Papers list</title>
 
     <!-- Enable responsiveness on mobile devices-->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
@@ -38,9 +40,9 @@
     <link rel="stylesheet" href="./papers_files/css">
 
     <!-- Icons -->
-    <link rel="shortcut icon" href="https://ml4code.github.io/public/favicon.svg">
-    <link rel="search" href="https://ml4code.github.io/public/opensearchdescription.xml"
-          type="application/opensearchdescription+xml" title="ML4Code">
+    <!--    <link rel="shortcut icon" href="https://ml4code.github.io/public/favicon.svg">-->
+    <!--    <link rel="search" href="https://ml4code.github.io/public/opensearchdescription.xml"-->
+    <!--        type="application/opensearchdescription+xml" title="ML4Code">-->
 
     <script src="./papers_files/jquery-3.2.1.min.js.下载" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
             crossorigin="anonymous"></script>
@@ -51,6 +53,7 @@
 
 
 <body class="theme-base-0d layout-reverse">
+
 <div class="sidebar">
     <div class="container sidebar-sticky">
         <div class="sidebar-about">
@@ -110,80 +113,63 @@
             window.location = "/papers.html#" + $("#searchTarget").val();
         }
     }
+
 </script>
 
+<div class="content container">
+    <h1>Datasets</h1>
+    <table id="datasets" class="dataTable no-footer" role="grid" aria-describedby="allPapers_info"
+           style="width: 700px;">
+        <thead>
+        <tr role="row">
+            <th class="sorting_desc" tabindex="0"  rowspan="1" colspan="1" style="width: 40px;">Year</th>
+            <th class="sorting_asc" tabindex="0" rowspan="1" colspan="1" style="width: 260px;">Description</th>
+            <th class="sorting" tabindex="0" rowspan="1" colspan="1" style="width: 100px;">Links</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr role="row" class="odd" v-for="paper in papers">
+            <td class="sorting_1">{{paper.year}}</td>
+            <td >{{paper.description}}</td>
+            <td><a href=""v-bind:href="paper.datasets">download</a></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
 
-<div class="content container" id="app">
+<script>
+    var app = new Vue({
+        el: "#datasets",
+        data: {
+            papers: [{title: "loading", year: "loading", authors: "loading", conference: "loading", tags: "loading", datasets :"loading",description :"loading"}],
+        },
+        methods: {
 
+        }
+    })
 
-    <h1>Publications by Tag</h1>
-    <p>
-        The following tags appear in the publications listed in the review:
-    </p>
+    // app.papers = [{ title: "12345", year: "2020", authors: "sb" }]
+    let url = 'papers_lst.json';
+    axios.get(url).then((response) => {
+        var datasets = {};
+        for (var i = 0, j = 0; i < response.data.length; i++) {
+            if (response.data[i]["description"] !=="") {
+                datasets[j] = response.data[i];
+                j++;
+            }
+            // datasets.length = j;
+        }
+        console.log(datasets)
+        app.papers = datasets;
+    }).catch((error) => {
+        console.log('error', error);
+    });
 
-
-    <div>
-        <tag v-for="tag in tags"><a v-bind:href="'#' + tag">{{tag}}</a></tag>
-
-        <!-- <tag><a >verification</a></tag> -->
-    </div>
-    <h2>Tags</h2>
-    <p>See below a list of all tags and the related papers</p>
-
-    <div v-for="value,key in tag_dict">
-        <h3>{{key}} <a v-bind:id="key"></a></h3>
-        <ul v-for="paper in value">
-            <li><a v-bind:href="paper.links">{{paper.title}}</a> {{paper.authors}}</li>
-        </ul>
-    </div>
+</script>
 
 
 </div>
 
-<script>
-
-    var app = new Vue({
-        el: "#app",
-        data: {
-            tags: ["AST", "API"],
-            tag_dict: {}
-        },
-        methods: {}
-    })
-
-    let url = 'papers_lst.json';
-    axios.get(url).then((response) => {
-        console.log(url);
-        var lst = response.data;
-        var tag_dict = {};
-        for (var i = 0; i < lst.length; i++) {
-            for (var tag of lst[i].tags) {
-                if (tag in tag_dict) {
-                    tag_dict[tag].push(lst[i]);
-                } else {
-                    tag_dict[tag] = [lst[i]];
-                }
-            }
-        }
-        console.log(tag_dict);
-        var tags = []
-        for (var tag in tag_dict) {
-            tags.push(tag);
-        }
-        app.tags = tags;
-        app.tag_dict = tag_dict;
-        // if (lst[i].year in tag_dict) {
-        //     year_dict[lst[i].year] ++;
-        // } else {
-        //     year_dict[lst[i].year] = 1;
-        // }
-        // }
-
-
-    }).catch((error) => {
-        console.log('error', error);
-    });
-</script>
 
 </body>
 

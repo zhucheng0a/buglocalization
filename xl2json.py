@@ -40,11 +40,11 @@ wc = WordCloud(
         # 设置背景色
         background_color='white',
         # 设置背景宽
-        width=800,
+        width=600,
         # 设置背景高
-        height=600,
+        height=500,
         # 最大字体
-        max_font_size=300,
+        max_font_size=250,
         # 最小字体
         min_font_size=15,
         mode='RGBA'

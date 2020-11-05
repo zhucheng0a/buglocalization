@@ -28,7 +28,7 @@
     <meta name="keywords"
           content="machine learning, source code, big code, naturalness, software engineering, programming languages">
 
-    <title>论文列表</title>
+    <title>Papers list</title>
 
     <!-- Enable responsiveness on mobile devices-->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
@@ -71,8 +71,7 @@
                     <button onclick="search();">Go</button>
                 </p>
             </div>
-            <a class="sidebar-nav-item active" href="index.html?classification=All">Paper list</a>
-            <a class="sidebar-nav-item" style="text-decoration: none"> Classification
+            <a class="sidebar-nav-item" href="index.html?classification=All">Papers list
                 <ul>
                     <a class="sidebar-nav-item"
                        href="index.html?classification=IR-based bug localization">IR-based BL</a>
@@ -84,8 +83,8 @@
                     <a class="sidebar-nav-item" href="index.html?classification=Datasets">Datasets</a>
                 </ul>
             </a>
-            <a class="sidebar-nav-item" href="./papers_by_tag.html">Tags</a>
-            <a class="sidebar-nav-item" href="wordcloud.html">Word cloud</a>
+            <a class="sidebar-nav-item" href="./papers_by_tag.html" style="margin-top: -20px">Publications by Tag</a>
+            <a class="sidebar-nav-item" href="./resources.html">Resources</a>
         </nav>
 
         <div class="sidebar-item">
@@ -116,20 +115,13 @@
     }
 
 </script>
-
-
-<div class="content container">
-    Search across all paper titles, abstracts, authors by using the search field.
-    Please consider <a href="https://ml4code.github.io/contributing.html">contributing</a> by updating
-    the information of existing papers or adding new work.
-    <div id="container" style="height: 300%"></div>
+<div class="content container" style="margin-left: 800px;width: 700px;position: absolute">
+    <img src=".\wordcloud.png" width="640px" style="margin-left: 10px">
+    <div id="container" style="height: 300% "></div>
     <div id="container2" style="height:400px"></div>
     <div id="container3" style="display: none;height:400px"></div>
-
-    <div id="allPapers_wrapper" class="dataTables_wrapper no-footer">
-        <!--            <div id="allPapers_filter" class="dataTables_filter"><label>Search:<input type="search" class=""-->
-        <!--                        placeholder="" aria-controls="allPapers"></label>-->
-    </div>
+</div>
+<div class="content container">
     <table id="allPapers" class="dataTable no-footer" role="grid" aria-describedby="allPapers_info"
            style="width: 718px;">
         <thead>
@@ -147,7 +139,8 @@
                 Authors
             </th>
             <th class="sorting" tabindex="0" aria-controls="allPapers" rowspan="1" colspan="1"
-                aria-label="Conference: activate to sort column ascending" style="width: 100px;" @click="sort_conference">
+                aria-label="Conference: activate to sort column ascending" style="width: 100px;"
+                @click="sort_conference">
                 Conference
             </th>
         </tr>
@@ -157,20 +150,7 @@
             <td class="sorting_1">{{paper.year}}</td>
             <td class="sorting_2" v-bind:title="paper.abstract"><a v-bind:href="paper.links">
                 {{paper.title}}</a>
-                <!--                            <span class="externallinks">-->
-                <!--                                &nbsp;<a-->
-                <!--                                    href="http://scholar.google.com/scholar?q=A%20Transformer-based%20Approach%20for%20Source%20Code%20Summarization"-->
-                <!--                                    target="_blank"><img style="display: inline; margin: 0;"-->
-                <!--                                        src="./papers_files/google-scholar.png"></a>-->
-                <!--                                <a href="https://www.semanticscholar.org/search?q=A%20Transformer-based%20Approach%20for%20Source%20Code%20Summarization"-->
-                <!--                                    target="_blank"><img style="display: inline; margin: 0;"-->
-                <!--                                        src="./papers_files/semscholar.png"></a>-->
-                <!--                                <a href="http://academic.microsoft.com/#/search?iq=A%20Transformer-based%20Approach%20for%20Source%20Code%20Summarization"-->
-                <!--                                    target="_blank"><img style="display: inline; margin: 0;"-->
-                <!--                                        src="./papers_files/ms-academic.png"></a>-->
-                <!--                            </span>-->
             </td>
-
             <td>{{paper.authors}}</td>
             <td>{{paper.conference}}</td>
         </tr>
@@ -203,9 +183,7 @@
     }
 
     var draw_pic = function (lst) {
-        console.log('pic', lst)
         var year_dict = {};
-        console.log(lst.length);
         for (var i = 0; i < lst.length; i++) {
             // console.log(lst[0]["year"]);
             if (lst[i]["year"] in year_dict) {
@@ -333,7 +311,7 @@
         }
         console.log(data2);
         var dom = document.getElementById("container3");
-        dom.style.display="";
+        dom.style.display = "";
         var myChart = echarts.init(dom);
         var app = {};
         option = null;
@@ -381,7 +359,7 @@
     var app = new Vue({
         el: "#allPapers",
         data: {
-            papers: [{title: "loading", year: "loading", authors: "loading", conference: "loading", tags: "loading"}],
+            papers: [{title: "loading", year: "loading", authors: "loading", conference: "loading", tags: "loading", datasets :"loading"}],
         },
         methods: {
             sort_year: function () {
