@@ -39,10 +39,6 @@
     <link rel="stylesheet" href="./papers_files/hyde.css">
     <link rel="stylesheet" href="./papers_files/css">
 
-    <!-- Icons -->
-    <!--    <link rel="shortcut icon" href="https://ml4code.github.io/public/favicon.svg">-->
-    <!--    <link rel="search" href="https://ml4code.github.io/public/opensearchdescription.xml"-->
-    <!--        type="application/opensearchdescription+xml" title="ML4Code">-->
 
     <script src="./papers_files/jquery-3.2.1.min.js.下载" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
             crossorigin="anonymous"></script>
@@ -98,18 +94,10 @@
 </div>
 
 <script>
-    $("#searchTarget").keydown(function (e) {
-        if (e.keyCode == 13) {
-            search();
-        }
-    });
 
     function search() {
-        try {
-            ga('send', 'event', 'search', 'search', $("#searchTarget").val());
-        } finally {
-            window.location = "/papers.html#" + $("#searchTarget").val();
-        }
+        const searchTarget = document.getElementById('searchTarget').value;
+        window.location.href="index.html?query="+searchTarget;
     }
 
 </script>

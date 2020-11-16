@@ -7,10 +7,9 @@
     <!-- Global Site Tag (gtag.js) - Google Analytics -->
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12"></script>
 
-    <script type="text/javascript" async="" src="./papers_files/analytics.js.下载"></script>
     <script type="text/javascript" async="" src="./papers_files/echarts.js"></script>
 
-    <script async="" src="./papers_files/js"></script>
+<!--    <script async="" src="./papers_files/js"></script>-->
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
@@ -22,14 +21,7 @@
         gtag('config', 'UA-107339008-1');
     </script>
 
-    <link href="http://gmpg.org/xfn/11" rel="profile">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-
-    <meta name="keywords"
-          content="machine learning, source code, big code, naturalness, software engineering, programming languages">
-
     <title>Papers list</title>
-
     <!-- Enable responsiveness on mobile devices-->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
 
@@ -38,17 +30,7 @@
     <link rel="stylesheet" href="./papers_files/syntax.css">
     <link rel="stylesheet" href="./papers_files/hyde.css">
     <link rel="stylesheet" href="./papers_files/css">
-
-    <!-- Icons -->
-    <!--    <link rel="shortcut icon" href="https://ml4code.github.io/public/favicon.svg">-->
-    <!--    <link rel="search" href="https://ml4code.github.io/public/opensearchdescription.xml"-->
-    <!--        type="application/opensearchdescription+xml" title="ML4Code">-->
-
-    <script src="./papers_files/jquery-3.2.1.min.js.下载" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
-            crossorigin="anonymous"></script>
-
     <link rel="stylesheet" type="text/css" href="./papers_files/jquery.dataTables.min.css">
-    <script type="text/javascript" charset="utf8" src="./papers_files/jquery.dataTables.min.js.下载"></script>
 </head>
 
 
@@ -98,18 +80,10 @@
 </div>
 
 <script>
-    $("#searchTarget").keydown(function (e) {
-        if (e.keyCode == 13) {
-            search();
-        }
-    });
 
     function search() {
-        try {
-            ga('send', 'event', 'search', 'search', $("#searchTarget").val());
-        } finally {
-            window.location = "/papers.html#" + $("#searchTarget").val();
-        }
+        const searchTarget = document.getElementById('searchTarget').value;
+        window.location.href="index.html?query="+searchTarget;
     }
 
 </script>
@@ -159,16 +133,6 @@
 </div>
 
 <script>
-    var classification = null;
-    if (window.location.href.indexOf("?") !== -1) {
-        classification = window.location.href.split("?")[1].split("=");
-        if (classification[0] === "classification") {
-            classification = classification[1];
-            classification = classification.split("%20").join(' ');
-        } else classification = null;
-    }
-
-
     var count_lst = function (lst, att) {
         var return_dict = {};
         for (var i = 0; i < lst.length; i++) {
@@ -188,7 +152,7 @@
             if (lst[i]["year"] in year_dict) {
                 year_dict[lst[i]["year"]]++;
             } else {
-                console.log(lst[1]["year"]);
+                // console.log(lst[1]["year"]);
                 year_dict[lst[i]["year"]] = 1;
             }
         }
@@ -231,7 +195,6 @@
 
     var draw_pic2 = function (lst) {
         d = count_lst(lst, "conference");
-        console.log(d);
         data = [];
         data2 = [];
         for (var i in d) {
@@ -245,7 +208,6 @@
         for (var i of data2) {
             data.push(i.name);
         }
-        console.log(data2);
         var dom = document.getElementById("container2");
         var myChart = echarts.init(dom);
         var app = {};
@@ -355,6 +317,17 @@
         }
     }
 
+    var para = null;
+    if (window.location.href.indexOf("?") !== -1) {
+        para = window.location.href.split("?")[1].split("=");
+        if (para[0] === "classification" || para[0] === "query") {
+            para[1]=para[1].split("%20").join(' ');
+
+        }
+        else para = null;
+    }
+
+
     var app = new Vue({
         el: "#allPapers",
         data: {
@@ -390,26 +363,42 @@
         }
     })
 
-    // app.papers = [{ title: "12345", year: "2020", authors: "sb" }]
     let url = 'papers_lst.json';
     axios.get(url).then((response) => {
-        console.log('data', response.data)
-        console.log('cla', classification)
-        var data_class = {};
-        if (classification == null || classification === "All") {
+        let data_class = {};
+        if (para == null) {
             data_class = response.data;
-        } else {
-            for (var i = 0, j = 0; i < response.data.length; i++) {
-                if (response.data[i]["classification"] === classification) {
-                    data_class[j] = response.data[i];
-                    j++;
-                }
-            }
-            data_class.length = j;
         }
+        else if (para[0] === "classification"){
+            if(para[1] === "All"){
+                data_class = response.data;
+            }
+            else {
+                for (var i = 0, j = 0; i < response.data.length; i++) {
+                    if (response.data[i]["classification"] === para[1]) {
+                        data_class[j] = response.data[i];
+                        j++;
+                    }
+                }
+                data_class.length = j;
+            }
+        }
+        else if(para[0]=== "query"){
+            for (var i = 0, j = 0; i < response.data.length; i++){
+                elements = response.data[i]
+                elements = JSON.stringify(elements)
+                if(elements.indexOf(para[1]) !== -1){
+                    data_class[j] = response.data[i];
+                    j++
+                }
+                data_class.length = j;
+            }
+        }
+
+        console.log(data_class)
         draw_pic(data_class);
         draw_pic2(data_class);
-        if (classification == null || classification === "All") {
+        if (para == null || para[0] === "classification" && para[1] === "All") {
             draw_pic3(data_class);
         }
         app.papers = data_class;
@@ -417,32 +406,6 @@
         console.log('error', error);
     });
 
-
-    // var datatable;
-
-    // function searchTable() {
-    //     var hash = decodeURIComponent(window.location.hash.substr(1));
-    //     datatable.search(hash).draw();
-    // }
-
-
-    // $(document).ready(function () {
-    //     datatable = $('#allPapers').DataTable({
-    //         paging: false,
-    //         "order": [[0, 'desc'], [1, 'asc']],
-    //         columnDefs: [
-    //             {
-    //                 targets: [3, 4, 5],
-    //                 visible: false,
-    //                 searchable: true
-    //             }]
-    //     });
-    //     searchTable();
-    // });
-
-    // $(window).on('hashchange', function () {
-    //     searchTable();
-    // });
 
 </script>
 
