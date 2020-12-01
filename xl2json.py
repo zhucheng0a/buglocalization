@@ -17,6 +17,13 @@ my_dict = p_o.fillna("").to_dict("index")
 my_lst = []
 
 word_lst = []
+cls_sets = set()
+for i, v in my_dict.items():
+    cls_sets.add(v["classification"])
+
+word_lst_cls = {cls:[] for cls in cls_sets}
+
+
 for i, v in my_dict.items():
     # print(i)
     v["authors"] = ", ".join(v["authors"].replace(",", "").split('\n'))
@@ -26,7 +33,8 @@ for i, v in my_dict.items():
     for token in doc:
         if token.pos_ == "NOUN":
             word_lst.append(token.lemma_)
-
+            word_lst_cls[v["classification"]].append(token.lemma_)
+    cls_sets.add(v["classification"])
     my_lst.append(v)
 
 # print([i for i in collections.Counter(word_lst).items()])
@@ -54,6 +62,13 @@ wc = WordCloud(
 wc.generate_from_frequencies(t_counter)
 # 保存图片
 wc.to_file(r"wordcloud.png") # 按照设置的像素宽高度保存绘制好的词云图，比下面程序显示更清晰
+
+for i,v in word_lst_cls.items():
+    t_counter = dict(collections.Counter(v))
+    wc.generate_from_frequencies(t_counter)
+    wc.to_file(i + ".png")
+
+
 
 import json
 
