@@ -40,7 +40,7 @@
     <div class="container sidebar-sticky">
         <div class="sidebar-about">
             <h1>
-                <a href="index.html">
+                <a href="index.html" style="font-size: 36px">
                     面向软件缺陷报告的缺陷定位方法研究与进展
                 </a>
             </h1>
@@ -89,50 +89,59 @@
 
 </script>
 
-<div style="width: 75%;margin-left: 40px;margin-top: 40px">
-    <table id="allPapers" class="dataTable no-footer" role="grid" aria-describedby="allPapers_info"
-           style="width:550px;float: left">
-        <thead>
-        <tr role="row">
-            <th class="sorting_desc" tabindex="0" aria-controls="allPapers" rowspan="1" colspan="1"
-                aria-label="Year: activate to sort column ascending" aria-sort="descending"
-                style="width: 37px;" @click="sort_year">
-                Year
-            </th>
-            <th class="sorting_asc" tabindex="0" aria-controls="allPapers" rowspan="1" colspan="1"
-                aria-label="Title: activate to sort column ascending" style="width: 232px;" @click="sort_title">Title
-            </th>
-            <th class="sorting" tabindex="0" aria-controls="allPapers" rowspan="1" colspan="1"
-                aria-label="Authors: activate to sort column ascending" style="width: 335px;" @click="sort_authors">
-                Authors
-            </th>
-            <th class="sorting" tabindex="0" aria-controls="allPapers" rowspan="1" colspan="1"
-                aria-label="Conference: activate to sort column ascending" style="width: 100px;"
-                @click="sort_conference">
-                Venue
-            </th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr role="row" class="odd" v-for="paper in papers">
-            <td class="sorting_1">{{paper.year}}</td>
-            <td class="sorting_2" v-bind:title="paper.abstract"><a v-bind:href="paper.links">
-                {{paper.title}}</a>
-            </td>
-            <td>{{paper.authors}}</td>
-            <td>{{paper.conference}}</td>
-        </tr>
 
-        </tbody>
-    </table>
-    <div style="width: 550px;float: left">
-        <img id="word_cloud" style="width: 90%;margin-left: 10px">
-        <div id="container" style="height: 300% "></div>
-        <div id="container2" style="height:400px"></div>
-        <div id="container3" style="display: none;height:400px"></div>
+<div style="padding-right: 360px;width: 100%;height:100px">
+    <div id="ri" style="width: 100%; margin: 20px 20px auto">
+        <img id="word_cloud" style="height: 300px;width:400px; float:left; margin: 0;padding: 10px">
+        <div id="container" style="height: 300px;width:660px;float: left"></div>
+        <div id="container2" style="height:300px;width:680px;float: left"></div>
+        <div id="container3" style="display: none;height:300px;width:420px; float: left"></div>
+        <table id="allPapers" class="dataTable no-footer" role="grid" aria-describedby="allPapers_info"
+               style="float: left;width: 1100px">
+            <thead>
+            <tr role="row">
+                <th class="sorting_desc" tabindex="0" aria-controls="allPapers" rowspan="1" colspan="1"
+                    aria-label="Year: activate to sort column ascending" aria-sort="descending"
+                    style="width: 37px;" @click="sort_year">
+                    Year
+                </th>
+                <th class="sorting_asc" tabindex="0" aria-controls="allPapers" rowspan="1" colspan="1"
+                    aria-label="Title: activate to sort column ascending" style="width: 232px;" @click="sort_title">Title
+                </th>
+                <th class="sorting" tabindex="0" aria-controls="allPapers" rowspan="1" colspan="1"
+                    aria-label="Authors: activate to sort column ascending" style="width: 335px;" @click="sort_authors">
+                    Authors
+                </th>
+                <th class="sorting" tabindex="0" aria-controls="allPapers" rowspan="1" colspan="1"
+                    aria-label="Conference: activate to sort column ascending" style="width: 100px;"
+                    @click="sort_conference">
+                    Venue
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr role="row" class="odd" v-for="paper in papers">
+                <td class="sorting_1">{{paper.year}}</td>
+                <td class="sorting_2" v-bind:title="paper.abstract"><a v-bind:href="paper.links">
+                    {{paper.title}}</a>
+                </td>
+                <td>{{paper.authors}}</td>
+                <td>{{paper.conference}}</td>
+            </tr>
+
+            </tbody>
+        </table>
+
     </div>
 </div>
 
+<script>
+    document.getElementById('ri').style.width = (document.body.clientWidth - 360) + "px";
+    window.onresize = resize;
+    function resize() {
+        document.getElementById('ri').style.width = (document.body.clientWidth - 360) + "px";
+    }
+</script>
 <script>
     var count_lst = function (lst, att) {
         var return_dict = {};
@@ -228,7 +237,7 @@
                     name: '文章来源',
                     type: 'pie',
                     radius: ['50%', '70%'],
-                    center: ['72%', '50%'],
+                    center: ['70%', '50%'],
                     avoidLabelOverlap: false,
                     label: {
                         show: false,
@@ -385,6 +394,7 @@
             }
         }
         else if(para[0]=== "query"){
+            document.getElementById('word_cloud').style.display='none';
             for (var i = 0, j = 0; i < response.data.length; i++){
                 elements = response.data[i]
                 elements = JSON.stringify(elements)
@@ -395,15 +405,14 @@
                 data_class.length = j;
             }
         }
-
-        console.log(data_class)
+        app.papers = data_class;
         draw_pic(data_class);
         draw_pic2(data_class);
         if (para == null || para[0] === "classification" && para[1] === "All") {
             draw_pic3(data_class);
         }
-        document.getElementById('word_cloud').src='.\\images\\All.png'
-        app.papers = data_class;
+        document.getElementById('word_cloud').src='.\\images\\All.png';
+
         if (para[0] === "classification"){
             console.log("222222",para[1]);
             const src_str=".\\images\\"+para[1]+".png";
