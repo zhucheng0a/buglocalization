@@ -47,7 +47,7 @@
             <p class="lead" style="color: white">Research Progress on Bug Report-Oriented Bug Localization Techniques</p>
         </div>
         <div class="sidebar-item">
-            <p style="font-size: 14px;color: white"><a href="mailto:nizhen@yzu.edu.cn">Ni Zhen</a>, Li Bin, <a href="https://risame.github.io/sun/">Sun Xiaobin</a>
+            <p style="font-size: 14px;color: white"><a href="mailto:nizhen@yzu.edu.cn">Ni Zhen</a>, Li Bin, <a href="https://risame.github.io/sun/">Sun Xiaobing</a>
                 and Zhu Cheng. <a href="https://risame.github.io/">RiSAME</a>, <a href="http://xxgcxy.yzu.edu.cn/">School of Information Engineering</a>, <a href="http://www.yzu.edu.cn/">Yangzhou University</a></p>
         </div>
         <nav class="sidebar-nav">
@@ -126,7 +126,7 @@
         </tbody>
     </table>
     <div style="width: 550px;float: left">
-        <img src=".\wordcloud.png" style="width: 90%;margin-left: 10px">
+        <img id="word_cloud" style="width: 90%;margin-left: 10px">
         <div id="container" style="height: 300% "></div>
         <div id="container2" style="height:400px"></div>
         <div id="container3" style="display: none;height:400px"></div>
@@ -402,7 +402,15 @@
         if (para == null || para[0] === "classification" && para[1] === "All") {
             draw_pic3(data_class);
         }
+        document.getElementById('word_cloud').src='.\\images\\All.png'
         app.papers = data_class;
+        if (para[0] === "classification"){
+            console.log("222222",para[1]);
+            const src_str=".\\images\\"+para[1]+".png";
+            document.getElementById('word_cloud').src=src_str
+        }
+
+
     }).catch((error) => {
         console.log('error', error);
     });
