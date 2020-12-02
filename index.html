@@ -34,7 +34,7 @@
 </head>
 
 
-<body class="theme-base-0d layout-reverse">
+<body class="theme-base-0d layout-reverse" style="min-width: 680px">
 
 <div class="sidebar">
     <div class="container sidebar-sticky">
@@ -90,7 +90,6 @@
 </script>
 
 
-<div style="width: auto;height:100px">
     <div id="ri" style="width: 100%; padding: 20px">
         <img id="word_cloud" style="height: 300px;width:400px; float:left; margin: 0;padding: 10px">
         <div id="container" style="height: 300px;width:660px;float: left;margin: 0"></div>
@@ -133,13 +132,15 @@
         </table>
 
     </div>
-</div>
 
 <script>
     document.getElementById('ri').style.width = (document.body.clientWidth - 360) + "px";
     window.onresize = resize;
     function resize() {
-        document.getElementById('ri').style.width = (document.body.clientWidth - 360) + "px";
+        if(document.body.clientWidth>750)
+            document.getElementById('ri').style.width = (document.body.clientWidth - 360) + "px";
+        else
+            document.getElementById('ri').style.width = (document.body.clientWidth) + "px";
     }
 </script>
 <script>
