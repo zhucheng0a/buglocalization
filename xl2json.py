@@ -64,9 +64,10 @@ wc.generate_from_frequencies(t_counter)
 wc.to_file(r"wordcloud.png") # 按照设置的像素宽高度保存绘制好的词云图，比下面程序显示更清晰
 
 for i,v in word_lst_cls.items():
+    print(i)
     t_counter = dict(collections.Counter(v))
     wc.generate_from_frequencies(t_counter)
-    wc.to_file(i + ".png")
+    wc.to_file(f"images/{i}.png")
 
 
 
