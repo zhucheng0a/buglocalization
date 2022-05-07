@@ -61,7 +61,7 @@ wc = WordCloud(
 # 产生词云
 wc.generate_from_frequencies(t_counter)
 # 保存图片
-wc.to_file(r"wordcloud.png") # 按照设置的像素宽高度保存绘制好的词云图，比下面程序显示更清晰
+wc.to_file(r"images/All.png") # 按照设置的像素宽高度保存绘制好的词云图，比下面程序显示更清晰
 
 for i,v in word_lst_cls.items():
     print(i)
