@@ -1,10 +1,8 @@
 <!DOCTYPE html>
-<!-- saved from url=(0046)https://ml4code.github.io/tags.html#generation -->
 <html lang="en-us">
 
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <!-- Global Site Tag (gtag.js) - Google Analytics -->
     <script type="text/javascript" async="" src="./papers_files/analytics.js.下载"></script>
     <script async="" src="./papers_files/js"></script>
     <script>
@@ -122,7 +120,7 @@
     <h2>Tags</h2>
     <p>See below a list of all tags and the related papers</p>
 
-    <div v-for="value,key in tag_dict">
+    <div v-for="value, key in tag_dict">
         <h3>{{key}} <a v-bind:id="key"></a></h3>
         <ul v-for="paper in value">
             <li><a v-bind:href="paper.links">{{paper.title}}</a> {{paper.authors}}</li>
